@@ -1,0 +1,11 @@
+POST http://localhost:8080/main-info
+Content-Type: application/json
+
+{
+  "okpo": 1234567890,
+  "name": "name"
+}
+
+###
+
+GET http://localhost:8080/infos

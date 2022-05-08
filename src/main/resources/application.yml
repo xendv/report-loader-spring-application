@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ftei
+    username: postgres
+    password:
+
+flyway:
+  url: jdbc:postgresql://localhost:5432/ftei
+  user: postgres
+  password:
+  enabled: true
+  locations:
+    - 'classpath:db/migration'
