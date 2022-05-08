@@ -7,4 +7,6 @@ public interface UserService extends UserDetailsService {
     SystemUser create(SystemUser user);
 
     SystemUser getCurrentUser();
+
+    boolean deleteUser(String login);
 }

@@ -1,5 +1,6 @@
-POST http://localhost:8080/main-info
+POST http://localhost:3333/report-loader/main-info
 Content-Type: application/json
+Authorization: Basic user user
 
 {
   "okpo": 1234567890,
@@ -8,4 +9,4 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/infos
+GET http://localhost:3333/report-loader/infos

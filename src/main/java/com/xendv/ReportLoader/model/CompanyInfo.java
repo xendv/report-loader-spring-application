@@ -15,7 +15,7 @@ public class CompanyInfo {
     @GeneratedValue
     @CsvBindByName(required = true)
     private @NotNull BigDecimal id;
-    @Column(nullable = false)
+    @Column(nullable = false, insertable = false, updatable = false)
     @CsvBindByName(required = true)
     private @NotNull BigDecimal okpo;
     @CsvBindByName

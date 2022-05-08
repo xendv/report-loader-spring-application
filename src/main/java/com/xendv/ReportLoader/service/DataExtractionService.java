@@ -1,10 +1,5 @@
 package com.xendv.ReportLoader.service;
 
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-import com.xendv.ReportLoader.model.MainInfo;
 import com.xendv.ReportLoader.service.storage.FileSystemStorageService;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +20,16 @@ public class DataExtractionService implements FileProcessingService {
         var file = storageService.loadAsFile(filePath);
         var extention = fileExtention(file.getName()).toLowerCase();
         if (extention.equals("csv")) {
-            dataFromCSVFile(file);
+            dataFromCSVFile(filePath);
         }
         if (extention.equals("dbf")) {
-            dataFromDBFFile(file);
+            dataFromDBFFile(filePath);
         }
         // return error
     }
 
-    public void dataFromCSVFile(Class<T> type, @NotNull String filePath) {
-        CsvToBean<MainInfo> csvToBean = new CsvToBeanBuilder(reader)
+    public void dataFromCSVFile(@NotNull String filePath) {
+        /*CsvToBean<MainInfo> csvToBean = new CsvToBeanBuilder(reader)
                 .withType(MainInfo.class)
                 .withIgnoreLeadingWhiteSpace(true)
                 .build();
@@ -49,7 +44,7 @@ public class DataExtractionService implements FileProcessingService {
         } catch (Exception e) {
             logger.error("Error occurred while loading object list from file " + fileName, e);
             return Collections.emptyList();
-        }
+        }*/
     }
 
     public void dataFromDBFFile(@NotNull String filePath) {

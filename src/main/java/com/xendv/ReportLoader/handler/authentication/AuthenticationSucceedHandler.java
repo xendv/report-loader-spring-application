@@ -19,7 +19,7 @@ public class AuthenticationSucceedHandler implements AuthenticationSuccessHandle
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
         handle(request, response, authentication);
-        clearAuthenticationAttributes(request);
+        //clearAuthenticationAttributes(request);
     }
 
     protected void handle(HttpServletRequest request,

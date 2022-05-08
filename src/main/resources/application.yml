@@ -1,12 +1,15 @@
+server.servlet.context-path: /report-loader
+server.port: 3333
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ftei
+    url: jdbc:postgresql://localhost:5432/ftei?characterEncoding=utf8
     username: postgres
     password:
 
 flyway:
-  url: jdbc:postgresql://localhost:5432/ftei
+  url: jdbc:postgresql://localhost:5432/ftei?characterEncoding=utf8
   user: postgres
   password:
   enabled: true

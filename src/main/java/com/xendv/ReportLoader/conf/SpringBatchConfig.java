@@ -38,13 +38,13 @@ public class SpringBatchConfig {
     @Bean
     public ItemReader<CompanyInfo> itemReader() // мб пакет не тот
             throws UnexpectedInputException, ParseException {
-        FlatFileItemReader<CompanyInfo> reader = new FlatFileItemReader<CompanyInfo>();
-        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+        FlatFileItemReader<CompanyInfo> reader = new FlatFileItemReader<>();
+                DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
         String[] tokens = {"username", "userid", "transactiondate", "amount"};
         tokenizer.setNames(tokens);
         reader.setResource(inputCsv);
-        DefaultLineMapper<CompanyInfo> lineMapper =
-                new DefaultLineMapper<CompanyInfo>();
+                DefaultLineMapper<CompanyInfo> lineMapper =
+                        new DefaultLineMapper<>();
         lineMapper.setLineTokenizer(tokenizer);
         lineMapper.setFieldSetMapper(new RecordFieldSetMapper());
         reader.setLineMapper(lineMapper);
@@ -61,18 +61,18 @@ public class SpringBatchConfig {
             throws MalformedURLException {
         StaxEventItemWriter<CompanyInfo> itemWriter =
                 new StaxEventItemWriter<CompanyInfo>();
-        itemWriter.setMarshaller(marshaller);
+        /*itemWriter.setMarshaller(marshaller);
         itemWriter.setRootTagName("transactionRecord");
-        itemWriter.setResource(outputXml);
+        itemWriter.setResource(outputXml);*/
         return itemWriter;
     }
 
-    @Bean
+/*    @Bean
     public Marshaller marshaller() {
-        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        *//*Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
         marshaller.setClassesToBeBound(new Class[]{CompanyInfo.class});
-        return marshaller;
-    }
+        return marshaller;*//*
+    }*/
 
     @Bean
     protected Step step1(ItemReader<CompanyInfo> reader,
