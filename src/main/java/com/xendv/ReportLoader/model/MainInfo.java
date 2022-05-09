@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Collection;
 
 @Data
 @Entity
@@ -21,6 +23,7 @@ public class MainInfo {
     @CsvBindByName
     private String name;
 
+/*    @JsonIgnore
     @OneToMany(mappedBy = "mainInfo", fetch=FetchType.EAGER)// lazy?
-    private Collection<CompanyInfo> companyInfo;
+    private Collection<CompanyInfo> companyInfo;*/
 }

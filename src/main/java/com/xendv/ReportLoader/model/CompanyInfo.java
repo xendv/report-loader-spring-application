@@ -1,6 +1,7 @@
 package com.xendv.ReportLoader.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
@@ -16,16 +17,29 @@ public class CompanyInfo {
     @Id
     @GeneratedValue
     @CsvBindByName(required = true)
+    @JsonProperty
     private @NotNull BigDecimal id;
     @Column(nullable = false, insertable = false, updatable = false)
     @CsvBindByName(required = true)
+    @JsonProperty
     private @NotNull BigDecimal okpo;
     @CsvBindByName
+    @JsonProperty
     private @NotNull BigDecimal people;
     @CsvBindByName
+    @JsonProperty
     private @NotNull BigDecimal revenue;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @CsvBindByName(column = "profit")
+    @JsonProperty("profit")
+    private @NotNull BigDecimal profit;
+    @CsvBindByName(column = "salary")
+    @JsonProperty("salary")
+    private @NotNull BigDecimal salary;
+
+/*    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "okpo", nullable = false)
-    private @NotNull MainInfo mainInfo;
+    @JsonIgnore
+    @ToString.Exclude
+    private @NotNull MainInfo mainInfo;*/
 }
