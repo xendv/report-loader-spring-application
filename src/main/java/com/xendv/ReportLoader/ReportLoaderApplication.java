@@ -10,6 +10,7 @@ public class ReportLoaderApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ReportLoaderApplication.class, args);
+        System.out.println("Application ReportLoaderApplication was successfully launched");
         System.out.println(passwordEncoder().encode("user"));
     }
 }

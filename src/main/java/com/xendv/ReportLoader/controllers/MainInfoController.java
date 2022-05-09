@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 
 @RestController
-
+@RequestMapping("/rest/api")
+@CrossOrigin(origins = "*")
 public class MainInfoController {
     @Autowired
     private MainInfoRepository mainInfoRepository;

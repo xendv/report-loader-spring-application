@@ -9,4 +9,35 @@ Authorization: Basic user user
 
 ###
 
-GET http://localhost:3333/report-loader/infos
+GET http://localhost:3333/report-loader/rest/api/main-info
+
+
+###
+
+POST http://localhost:3333/report-loader/rest/api/main-info
+Content-Type: application/json
+
+{
+  "okpo": 1234567890,
+  "name": "name"
+}
+
+###
+
+POST http://localhost:3333/report-loader/rest/api/upload
+Content-Type: multipart/form-data
+
+###
+GET http://localhost:3333/report-loader/rest/api/check
+
+###
+POST http://localhost:3333/report-loader/rest/api/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="field-name"
+
+field-value
+--WebAppBoundary--
+
+###

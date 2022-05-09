@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,10 +14,12 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/rest/api")
+@CrossOrigin(origins = "*")
 public class FileUploadController {
 
+    @Autowired
     private final StorageService storageService;
 
     @Autowired
@@ -46,13 +47,11 @@ public class FileUploadController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
-                                                   //RedirectAttributes redirectAttributes
-                                                   Model model) {
+    @PostMapping("/upload")
+    @ResponseBody
+    public ResponseEntity<String> handleFileUpload(@RequestParam(value = "file") MultipartFile file) {
         if (file.isEmpty()) {
-            model.addAttribute("message", "Please select a file to upload");
-            model.addAttribute("status", false);
+
             return ResponseEntity.badRequest().body("Your file is empty");
         } else {
             storageService.store(file);
@@ -62,6 +61,11 @@ public class FileUploadController {
         }
 
         return ResponseEntity.ok("File is ok");
+    }
+
+    @GetMapping("/check")
+    public String check() {
+        return "CHECKED";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

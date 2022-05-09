@@ -1,5 +1,7 @@
 server.servlet.context-path: /report-loader
 server.port: 3333
+logging.level.root: WARN
+logging.level.com.xendv.ReportLoader: TRACE
 
 spring:
   datasource:
