@@ -1,21 +1,10 @@
-POST http://localhost:3333/report-loader/main-info
-Content-Type: application/json
-Authorization: Basic user user
-
-{
-  "okpo": 1234567890,
-  "name": "name"
-}
-
-###
-
 GET http://localhost:3333/report-loader/rest/api/main-info
-
 
 ###
 
 POST http://localhost:3333/report-loader/rest/api/main-info
 Content-Type: application/json
+//Authorization: Basic user user
 
 {
   "okpo": 1234567890,

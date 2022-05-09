@@ -1,5 +1,6 @@
 package com.xendv.ReportLoader.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 @Data
 @Entity
 @Table(schema = "service", name = "main_info")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MainInfo {
     @Id
     @Column(nullable = false)

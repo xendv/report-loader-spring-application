@@ -1,5 +1,6 @@
 package com.xendv.ReportLoader.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @Table(schema = "service", name = "indexes")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyInfo {
     @Id
     @GeneratedValue

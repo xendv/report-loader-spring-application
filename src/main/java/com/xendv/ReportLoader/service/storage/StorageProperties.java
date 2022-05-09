@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
-    /**
-     * Folder location for storing files
-     */
     private String location = "temp";
 
     public String getLocation() {
