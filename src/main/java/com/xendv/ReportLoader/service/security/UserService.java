@@ -1,4 +1,4 @@
-package com.xendv.ReportLoader.service;
+package com.xendv.ReportLoader.service.security;
 
 import com.xendv.ReportLoader.model.SystemUser;
 import org.springframework.security.core.userdetails.UserDetailsService;

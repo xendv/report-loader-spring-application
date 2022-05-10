@@ -1,7 +1,7 @@
 package com.xendv.ReportLoader.controllers;
 
 import com.xendv.ReportLoader.model.SystemUser;
-import com.xendv.ReportLoader.service.UserServiceImpl;
+import com.xendv.ReportLoader.service.security.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

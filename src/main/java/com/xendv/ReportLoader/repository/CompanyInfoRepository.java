@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 
 @Repository
-public interface CompanyInfoRepository extends PagingAndSortingRepository<CompanyInfo, BigDecimal>, CustomCompanyInfoRepository {
+public interface CompanyInfoRepository extends PagingAndSortingRepository<CompanyInfo, BigDecimal> {
 }

@@ -2,7 +2,7 @@ package com.xendv.ReportLoader.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xendv.ReportLoader.exception.storage.StorageFileNotFoundException;
-import com.xendv.ReportLoader.service.FileProcessingService;
+import com.xendv.ReportLoader.service.processing.DataExtractionService;
 import com.xendv.ReportLoader.service.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +18,10 @@ public class FileUploadController {
     private final StorageService storageService;
 
     @Autowired
-    private final FileProcessingService extractionService;
+    private final DataExtractionService extractionService;
 
     @Autowired
-    public FileUploadController(StorageService storageService, FileProcessingService extractionService) {
+    public FileUploadController(StorageService storageService, DataExtractionService extractionService) {
         this.storageService = storageService;
         this.extractionService = extractionService;
     }

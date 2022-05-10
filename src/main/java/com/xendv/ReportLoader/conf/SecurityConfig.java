@@ -2,7 +2,7 @@ package com.xendv.ReportLoader.conf;
 
 import com.xendv.ReportLoader.handler.authentication.AuthenticationFailedHandler;
 import com.xendv.ReportLoader.handler.authentication.AuthenticationSucceedHandler;
-import com.xendv.ReportLoader.service.UserServiceImpl;
+import com.xendv.ReportLoader.service.security.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

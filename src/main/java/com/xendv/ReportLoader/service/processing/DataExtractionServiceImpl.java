@@ -1,4 +1,4 @@
-package com.xendv.ReportLoader.service;
+package com.xendv.ReportLoader.service.processing;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DataExtractionService implements FileProcessingService {
+public class DataExtractionServiceImpl implements DataExtractionService {
     char colDelimiter = '|';
     char rowDelimiter = '\n';
     ArrayList<String> header = new ArrayList<>();
@@ -24,7 +24,7 @@ public class DataExtractionService implements FileProcessingService {
     private @NotNull FileSystemStorageService storageService;
 
     @Autowired
-    public DataExtractionService() {
+    public DataExtractionServiceImpl() {
 
     }
 
