@@ -2,6 +2,8 @@ package com.xendv.ReportLoader.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xendv.ReportLoader.exception.storage.StorageFileNotFoundException;
+import com.xendv.ReportLoader.model.FullInfo;
+import com.xendv.ReportLoader.service.data.FullInfoService;
 import com.xendv.ReportLoader.service.processing.DataExtractionService;
 import com.xendv.ReportLoader.service.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/rest/api")
-@CrossOrigin(origins = "*")
+@RequestMapping("/rest/api/upload")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FileUploadController {
 
     @Autowired
@@ -21,38 +25,23 @@ public class FileUploadController {
     private final DataExtractionService extractionService;
 
     @Autowired
-    public FileUploadController(StorageService storageService, DataExtractionService extractionService) {
+    private final FullInfoService fullInfoService;
+
+    @Autowired
+    public FileUploadController(StorageService storageService, DataExtractionService extractionService, FullInfoService fullInfoService) {
         this.storageService = storageService;
         this.extractionService = extractionService;
+        this.fullInfoService = fullInfoService;
     }
 
-    /*@GetMapping("/")
-    public String listUploadedFiles(Model model) throws IOException {
-
-        model.addAttribute("files", storageService.loadAll().map(
-                        path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-                                "serveFile", path.getFileName().toString()).build().toUri().toString())
-                .collect(Collectors.toList()));
-
-        return "uploadForm";
-    }
-
-    @GetMapping("/files/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-        Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-    }*/
-
-    @PostMapping("/upload")
+    @PostMapping("")
     @ResponseBody
     public String handleFileUpload(@RequestParam(value = "file") MultipartFile file) {
         if (file.isEmpty()) {
             return null;//ResponseEntity.badRequest().body("Your file is empty");
         } else {
             String newFile = storageService.storeInTemp(file);
+            //var companies = extractionService.extract(newFile);
             var companies = extractionService.extract(newFile);
             //ResponseEntity.ok().body(extractionService.extract(newFile));
             ObjectMapper objectMapper = new ObjectMapper();
@@ -70,6 +59,13 @@ public class FileUploadController {
         }
 
         //return null;//ResponseEntity.ok("File is ok");
+    }
+
+    @PostMapping("/save")
+    public String saveUploadedDataToDb(@RequestBody List<FullInfo> fullInfos) {
+        System.out.println("Got data: " + fullInfos);
+        fullInfoService.saveAll(fullInfos);
+        return ("Got data: " + fullInfos);
     }
 
     @GetMapping("/check")

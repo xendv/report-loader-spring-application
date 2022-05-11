@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("dataExtractionService")
 public class DataExtractionServiceImpl implements DataExtractionService {
     char colDelimiter = '|';
     char rowDelimiter = '\n';
@@ -25,9 +25,7 @@ public class DataExtractionServiceImpl implements DataExtractionService {
 
     @Autowired
     public DataExtractionServiceImpl() {
-
     }
-
 
     public List<FullInfo> extract(@NotNull String filePath) {
         //var resource = storageService.loadAsResource(filePath);
@@ -92,7 +90,7 @@ public class DataExtractionServiceImpl implements DataExtractionService {
 
     }
 
-    public String fileExtention (@NotNull String filename) {
+    public String fileExtention(@NotNull String filename) {
         return Optional.of(filename)
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1))

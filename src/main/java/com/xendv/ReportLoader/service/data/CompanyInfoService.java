@@ -1,13 +1,15 @@
 package com.xendv.ReportLoader.service.data;
 
 import com.xendv.ReportLoader.model.CompanyInfo;
-import org.springframework.stereotype.Service;
+import io.micrometer.core.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Service("companyInfoService")
 public interface CompanyInfoService {
+
+    @Nullable
+    CompanyInfo create(CompanyInfo companyInfo);
 
     Iterable<CompanyInfo> get(@NotNull BigDecimal okpo);
 

@@ -21,6 +21,11 @@ public class CompanyInfoController {
         return companyInfoService.get(okpo);
     }
 
+    @PostMapping("/save")
+    public CompanyInfo save(@RequestBody CompanyInfo companyInfo) {
+        return companyInfoService.create(companyInfo);
+    }
+
     @GetMapping("/all")
     public Iterable<CompanyInfo> getAll() {
         return companyInfoService.getAll();

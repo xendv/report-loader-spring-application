@@ -1,5 +1,6 @@
 package com.xendv.ReportLoader.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opencsv.bean.CsvBindByName;
@@ -13,33 +14,74 @@ import java.math.BigDecimal;
 @Entity
 @Table(schema = "service", name = "indexes")
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CompanyInfo {
+    /*    @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @CsvBindByName(required = true)
+        @JsonProperty
+        @JsonIgnore
+        @Column(name = "id", nullable = false, insertable = false, updatable = false)
+        private BigDecimal id;*/
     @Id
-    @GeneratedValue
-    @CsvBindByName(required = true)
-    @JsonProperty
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @CsvBindByName(column = "id")
+    @JsonProperty("id")
     private @NotNull BigDecimal id;
-    @Column(nullable = false, insertable = false, updatable = false)
+
     @CsvBindByName(required = true)
     @JsonProperty
+    @Column(name = "okpo", nullable = false)
+    //@JoinColumn(name = "okpo", nullable = false)//, referencedColumnName="okpo", table = "main_info"
     private @NotNull BigDecimal okpo;
+
     @CsvBindByName
     @JsonProperty
-    private @NotNull BigDecimal people;
+    private BigDecimal people;
     @CsvBindByName
     @JsonProperty
-    private @NotNull BigDecimal revenue;
+    private BigDecimal revenue;
 
     @CsvBindByName(column = "profit")
     @JsonProperty("profit")
-    private @NotNull BigDecimal profit;
+    private BigDecimal profit;
     @CsvBindByName(column = "salary")
     @JsonProperty("salary")
-    private @NotNull BigDecimal salary;
+    private BigDecimal salary;
 
-/*    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "okpo", nullable = false)
+/*
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "okpo", nullable = false, referencedColumnName="okpo")
     @JsonIgnore
     @ToString.Exclude
-    private @NotNull MainInfo mainInfo;*/
+    private MainInfo mainInfo;
+
+    @JsonIgnore
+    //@Transient
+    //@CsvBindByName(column = "name")
+    public MainInfo getMainInfo() {
+        return mainInfo;
+    }
+
+    //@CsvBindByName(required = true)
+    @JsonProperty(value = "okpo")
+    @JsonGetter
+    @Column(name = "okpo")
+    public BigDecimal getOkpo() {
+        return getMainInfo().getOkpo();
+    }
+
+    @JsonSetter
+    @Column(name = "okpo")
+    public void setOkpo(BigDecimal okpo) {
+        this.okpo = okpo;
+    }
+*/
+
+/*
+    @JsonProperty("name")
+    @JsonGetter(value = "name")
+    public @NotNull String getName() {
+        return mainInfo.getName();
+    }*/
 }

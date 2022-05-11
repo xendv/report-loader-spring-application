@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 
@@ -14,6 +15,11 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Autowired
     private CompanyInfoExtendedRepository companyInfoRepository;
+
+    @Override
+    public CompanyInfo create(@NotNull CompanyInfo companyInfo) {
+        return companyInfoRepository.save(companyInfo);
+    }
 
     public Iterable<CompanyInfo> get(@PathVariable BigDecimal okpo) {
         return companyInfoRepository.findAllByOkpo(okpo);

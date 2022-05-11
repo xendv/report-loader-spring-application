@@ -17,7 +17,7 @@ POST http://localhost:3333/report-loader/rest/api/upload
 Content-Type: multipart/form-data
 
 ###
-GET http://localhost:3333/report-loader/rest/api/check
+GET http://localhost:3333/report-loader/rest/api/upload/check
 
 ###
 POST http://localhost:3333/report-loader/rest/api/upload
@@ -28,5 +28,35 @@ Content-Disposition: form-data; name="field-name"
 
 field-value
 --WebAppBoundary--
+
+###
+
+###
+POST http://localhost:3333/report-loader/rest/api/upload/save
+Content-Type: application/json;
+
+[
+  {
+    "okpo": 1234567890,
+    "name": "name"
+  },
+  {
+    "okpo": 2222222222,
+    "name": "name"
+  }
+]
+
+###
+
+###
+POST http://localhost:3333/report-loader/rest/api/company-info/save
+Content-Type: application/json;
+
+
+{
+  "okpo": 1234567890,
+  "salary": 12
+}
+
 
 ###

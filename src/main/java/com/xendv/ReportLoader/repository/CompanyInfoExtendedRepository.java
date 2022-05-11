@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CompanyInfoExtendedRepository extends CompanyInfoRepository {
-    @Query(value = "SELECT e FROM CompanyInfo e where e.okpo = :okpo")
+    @Query(value = "SELECT * FROM service.indexes where okpo = ?1", nativeQuery = true)
     List<CompanyInfo> findAllByOkpo(@Param("okpo") BigDecimal okpo);
 }

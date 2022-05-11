@@ -6,5 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface DataExtractionService {
+
     List<FullInfo> extract(@NotNull String filePath);
+
 }
