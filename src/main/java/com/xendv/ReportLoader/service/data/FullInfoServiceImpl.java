@@ -24,8 +24,8 @@ public class FullInfoServiceImpl implements FullInfoService {
         fullInfos.forEach(fullInfo -> {
             var main = objectMapper.convertValue(fullInfo, MainInfo.class);
             var company = objectMapper.convertValue(fullInfo, CompanyInfo.class);
-            mainInfoService.create(main);
-            companyInfoService.create(company);
+            mainInfoService.updateValuesIfNotNull(main);
+            companyInfoService.updateValuesIfNotNull(company);
         });
     }
 }

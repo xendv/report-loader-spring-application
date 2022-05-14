@@ -21,6 +21,27 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
         return companyInfoRepository.save(companyInfo);
     }
 
+    @Override
+    public void updateValuesIfNotNull(CompanyInfo companyInfo) {
+        //if (companyInfo.okpo != null && companyInfo.year != null)
+        if (companyInfo.year == null)
+            return;
+        final var entry = companyInfoRepository.findByOkpoAndYear(companyInfo.okpo, companyInfo.year);
+        if (entry.isPresent()) {
+            companyInfoRepository
+                    .updateValues(
+                            companyInfo.okpo,
+                            companyInfo.year,
+                            companyInfo.people,
+                            companyInfo.revenue,
+                            companyInfo.profit,
+                            companyInfo.salary
+                    );
+        } else {
+            create(companyInfo);
+        }
+    }
+
     public Iterable<CompanyInfo> get(@PathVariable BigDecimal okpo) {
         return companyInfoRepository.findAllByOkpo(okpo);
     }

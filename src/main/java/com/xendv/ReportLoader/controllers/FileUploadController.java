@@ -63,7 +63,7 @@ public class FileUploadController {
 
     @PostMapping("/save")
     public String saveUploadedDataToDb(@RequestBody List<FullInfo> fullInfos) {
-        System.out.println("Got data: " + fullInfos);
+        //System.out.println("Got data: " + fullInfos);
         fullInfoService.saveAll(fullInfos);
         return ("Got data: " + fullInfos);
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,17 +16,21 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(schema = "service", name = "main_info")
+@Table(schema = "main", name = "main_info")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@DynamicUpdate
 public class MainInfo {
+
+    @Id
+    @Column(name = "okpo", nullable = false, updatable = false)
+    @CsvBindByName(required = true)
+    public @NotNull BigDecimal okpo;
+
     @JsonProperty("name")
     @CsvBindByName
+    @Column(name = "name")
     public String name;
-    @Id
-    @Column(name = "okpo", nullable = false)
-    @CsvBindByName(required = true)
-    private @NotNull BigDecimal okpo;
 
     /*@JsonIgnore
     @OneToMany(mappedBy = "mainInfo", fetch=FetchType.EAGER)// lazy?

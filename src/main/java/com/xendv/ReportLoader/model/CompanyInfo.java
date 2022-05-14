@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(schema = "service", name = "indexes")
+@Table(schema = "main", name = "indexes")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CompanyInfo {
@@ -27,27 +27,33 @@ public class CompanyInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @CsvBindByName(column = "id")
     @JsonProperty("id")
-    private @NotNull BigDecimal id;
+    public @NotNull BigDecimal id;
+
+    @CsvBindByName(required = true)
+    @JsonProperty("reporting_year")
+    @Column(name = "reporting_year", nullable = false)
+    public @NotNull BigDecimal year;
 
     @CsvBindByName(required = true)
     @JsonProperty
-    @Column(name = "okpo", nullable = false)
+    @Column(name = "okpo", nullable = false, updatable = false)
     //@JoinColumn(name = "okpo", nullable = false)//, referencedColumnName="okpo", table = "main_info"
-    private @NotNull BigDecimal okpo;
+    public @NotNull BigDecimal okpo;
 
     @CsvBindByName
     @JsonProperty
-    private BigDecimal people;
+    public BigDecimal people;
     @CsvBindByName
     @JsonProperty
-    private BigDecimal revenue;
+    public BigDecimal revenue;
 
     @CsvBindByName(column = "profit")
     @JsonProperty("profit")
-    private BigDecimal profit;
+    public BigDecimal profit;
     @CsvBindByName(column = "salary")
     @JsonProperty("salary")
-    private BigDecimal salary;
+    public BigDecimal salary;
+
 
 /*
     @ManyToOne(optional = false, cascade = CascadeType.ALL)

@@ -3,6 +3,7 @@ package com.xendv.ReportLoader.service.data;
 import com.xendv.ReportLoader.model.MainInfo;
 import com.xendv.ReportLoader.repository.MainInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -30,9 +31,25 @@ public class MainInfoServiceImpl implements MainInfoService {
     }
 
     @Override
-    public MainInfo get(@PathVariable BigDecimal okpo) {
+    public void updateValuesIfNotNull(MainInfo mainInfo) {
+        final var entry = mainInfoRepository.findById(mainInfo.getOkpo());
+        if (entry.isPresent()) {
+            mainInfoRepository.updateValues(mainInfo.okpo, mainInfo.name);
+        } else {
+            create(mainInfo);
+        }
+    }
+
+    @Override
+    public @Nullable
+    MainInfo get(@PathVariable BigDecimal okpo) {
         return mainInfoRepository.findById(okpo).orElse(null);
     }
+
+/*    @Override
+    public Optional<MainInfo> get(@PathVariable BigDecimal okpo) {
+        return mainInfoRepository.findById(okpo);
+    }*/
 
     @Override
     public Iterable<MainInfo> getAll() {

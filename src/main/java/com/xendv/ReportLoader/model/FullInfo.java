@@ -6,7 +6,6 @@ import com.opencsv.bean.CsvBindByName;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -16,17 +15,23 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FullInfo implements Serializable {
     @Id
-    @GeneratedValue
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @CsvBindByName(column = "id")
     @JsonProperty("id")
     private @NotNull BigDecimal id;
+
     @Column(nullable = false, insertable = false, updatable = false)
     @JsonProperty(value = "okpo", required = true)
     @CsvBindByName(required = true, column = "okpo")
     private @NotNull BigDecimal okpo;
+
     @CsvBindByName(column = "name")
     @JsonProperty("name")
     private String name;
+
+    @CsvBindByName(required = true)
+    @JsonProperty("reporting_year")
+    private BigDecimal reportingYear;
 
     @CsvBindByName(column = "people")
     @JsonProperty("people")

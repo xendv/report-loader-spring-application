@@ -11,6 +11,9 @@ public interface CompanyInfoService {
     @Nullable
     CompanyInfo create(CompanyInfo companyInfo);
 
+    void updateValuesIfNotNull(@NotNull CompanyInfo companyInfo);
+
+    @Nullable
     Iterable<CompanyInfo> get(@NotNull BigDecimal okpo);
 
     Iterable<CompanyInfo> getAll();
