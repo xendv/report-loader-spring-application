@@ -2,7 +2,6 @@ package com.xendv.ReportLoader.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xendv.ReportLoader.exception.storage.StorageFileNotFoundException;
 import com.xendv.ReportLoader.model.FullInfo;
 import com.xendv.ReportLoader.service.data.FullInfoService;
 import com.xendv.ReportLoader.service.processing.DataExtractionService;
@@ -12,7 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/api/upload")
@@ -29,7 +32,9 @@ public class FileUploadController {
     private final FullInfoService fullInfoService;
 
     @Autowired
-    public FileUploadController(StorageService storageService, DataExtractionService extractionService, FullInfoService fullInfoService) {
+    public FileUploadController(@NotNull StorageService storageService,
+                                @NotNull DataExtractionService extractionService,
+                                @NotNull FullInfoService fullInfoService) {
         this.storageService = storageService;
         this.extractionService = extractionService;
         this.fullInfoService = fullInfoService;
@@ -40,11 +45,21 @@ public class FileUploadController {
     public ResponseEntity<String> handleFileUpload(@RequestParam(value = "file") MultipartFile file) {
         String newFile = storageService.storeInTemp(file);
         try {
-            var companies = extractionService.extract(newFile);
             ObjectMapper objectMapper = new ObjectMapper();
-            var c = objectMapper.writeValueAsString(companies);
-            System.out.println(c);
-            return ResponseEntity.ok().body(c);
+            var companies = extractionService.extract(newFile);
+            var companiesJsonString = objectMapper.writeValueAsString(companies);
+
+            var companiesAndStates = fullInfoService.getStates(companies);
+            List<String> states = new ArrayList<>(companiesAndStates.values());
+            var statesJsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(states);
+
+            Map<String, String> responseMap = new LinkedHashMap<>();
+            responseMap.put("infos", companiesJsonString);
+            responseMap.put("states", statesJsonString);
+
+            var responseJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseMap);
+            System.out.println("Extracted data in JSON: \n" + responseJson);
+            return ResponseEntity.ok().body(responseJson);
         } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body(e.getLocalizedMessage());
         }
@@ -52,18 +67,7 @@ public class FileUploadController {
 
     @PostMapping("/save")
     public String saveUploadedDataToDb(@RequestBody List<FullInfo> fullInfos) {
-        //System.out.println("Got data: " + fullInfos);
         fullInfoService.saveAll(fullInfos);
-        return ("Got data: " + fullInfos);
-    }
-
-    @GetMapping("/check")
-    public String check() {
-        return "CHECKED";
-    }
-
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        return ResponseEntity.notFound().build();
+        return ("Saved data: " + fullInfos);
     }
 }

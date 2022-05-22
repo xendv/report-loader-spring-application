@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @Table(schema = "main", name = "indexes")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@EqualsAndHashCode
 public class CompanyInfo {
     /*    @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +30,7 @@ public class CompanyInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @CsvBindByName(column = "id")
     @JsonProperty("id")
+    @EqualsAndHashCode.Exclude
     public @NotNull BigDecimal id;
 
     @CsvBindByName(required = true)
@@ -38,7 +41,6 @@ public class CompanyInfo {
     @CsvBindByName(required = true)
     @JsonProperty
     @Column(name = "okpo", nullable = false, updatable = false)
-    //@JoinColumn(name = "okpo", nullable = false)//, referencedColumnName="okpo", table = "main_info"
     public @NotNull BigDecimal okpo;
 
     @CsvBindByName
@@ -54,43 +56,6 @@ public class CompanyInfo {
     @CsvBindByName(column = "salary")
     @JsonProperty("salary")
     public BigDecimal salary;
-
-
-/*
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "okpo", nullable = false, referencedColumnName="okpo")
-    @JsonIgnore
-    @ToString.Exclude
-    private MainInfo mainInfo;
-
-    @JsonIgnore
-    //@Transient
-    //@CsvBindByName(column = "name")
-    public MainInfo getMainInfo() {
-        return mainInfo;
-    }
-
-    //@CsvBindByName(required = true)
-    @JsonProperty(value = "okpo")
-    @JsonGetter
-    @Column(name = "okpo")
-    public BigDecimal getOkpo() {
-        return getMainInfo().getOkpo();
-    }
-
-    @JsonSetter
-    @Column(name = "okpo")
-    public void setOkpo(BigDecimal okpo) {
-        this.okpo = okpo;
-    }
-*/
-
-/*
-    @JsonProperty("name")
-    @JsonGetter(value = "name")
-    public @NotNull String getName() {
-        return mainInfo.getName();
-    }*/
 
     public boolean checkNull() throws IllegalAccessException {
         for (Field f : getClass().getDeclaredFields())

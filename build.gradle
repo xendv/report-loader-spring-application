@@ -39,6 +39,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.2'
+	implementation 'com.github.albfernandez:javadbf:1.13.1'
 	implementation 'com.opencsv:opencsv:5.0'
 
 	// Tests

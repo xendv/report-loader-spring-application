@@ -3,6 +3,7 @@ package com.xendv.ReportLoader.handler;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.xendv.ReportLoader.exception.ExtractionException;
 import com.xendv.ReportLoader.exception.ServerStateException;
+import com.xendv.ReportLoader.exception.storage.StorageFileNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,10 +30,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(e.getLocalizedMessage());
     }
 
-/*    @ExceptionHandler({ UnrecognizedPropertyException.class})
-    public ResponseEntity<String> handleException(UnrecognizedPropertyException e) {
+    @ExceptionHandler(StorageFileNotFoundException.class)
+    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException e) {
         return ResponseEntity.badRequest().body(e.getLocalizedMessage());
-    }*/
+    }
 
     @ControllerAdvice
     public class Handler {

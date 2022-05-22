@@ -21,4 +21,6 @@ public interface CompanyInfoService {
     void delete(@NotNull BigDecimal okpo);
 
     void update(@NotNull BigDecimal okpo, CompanyInfo companyInfo);
+
+    String getState(CompanyInfo company);
 }

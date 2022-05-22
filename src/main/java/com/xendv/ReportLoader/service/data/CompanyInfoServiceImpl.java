@@ -23,7 +23,6 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 
     @Override
     public void updateValuesIfNotNull(CompanyInfo companyInfo) {
-        //if (companyInfo.okpo != null && companyInfo.year != null)
         if (companyInfo.year == null)
             return;
         final var entry = companyInfoRepository.findByOkpoAndYear(companyInfo.okpo, companyInfo.year);
@@ -39,6 +38,19 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
                     );
         } else {
             create(companyInfo);
+        }
+    }
+
+    @Override
+    public String getState(@NotNull CompanyInfo company) {
+        final var entry = companyInfoRepository.findByOkpoAndYear(company.okpo, company.year);
+        if (entry.isPresent()) {
+            if (entry.get().equals(company)) {
+                return "Не изменено";
+            }
+            return "Изменено";
+        } else {
+            return "Добавлено";
         }
     }
 
