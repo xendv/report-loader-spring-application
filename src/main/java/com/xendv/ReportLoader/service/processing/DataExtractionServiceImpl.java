@@ -1,8 +1,13 @@
 package com.xendv.ReportLoader.service.processing;
 
 import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.xendv.ReportLoader.exception.ExtractionException;
+import com.xendv.ReportLoader.exception.ServerStateException;
+import com.xendv.ReportLoader.model.CompanyInfo;
 import com.xendv.ReportLoader.model.FullInfo;
 import com.xendv.ReportLoader.service.storage.FileSystemStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,18 +77,35 @@ public class DataExtractionServiceImpl implements DataExtractionService {
             list = csvReader.readAll();
             reader.close();
             csvReader.close();*/
-
-            CsvSchema bootstrapSchema = CsvSchema.emptySchema().withUseHeader(true).withHeader().withColumnSeparator('|');
             CsvMapper mapper = new CsvMapper();
+            CsvSchema schema = CsvSchema.emptySchema().withUseHeader(true).withHeader().withColumnSeparator('|');
+            //CsvSchema schema = mapper.schemaFor(FullInfo.class).withHeader().withColumnSeparator('|');
+           /* MappingIterator<FullInfo> readValues =
+                    mapper.readerFor(FullInfo.class).with(bootstrapSchema).readValues(file);*/
             MappingIterator<FullInfo> readValues =
-                    mapper.readerFor(FullInfo.class).with(bootstrapSchema).readValues(file);
-
-            return readValues.readAll();
-
+                    mapper.readerFor(FullInfo.class).with(schema).readValues(file);
+            var list = readValues.readAll();
+            ObjectMapper objectMapper = new ObjectMapper();
+            for (FullInfo info : list) {
+                if (info.okpo == null) {
+                    throw new ExtractionException("Ошибка обработки. Не найден ОКПО (поле okpo)");
+                }
+                var companyInfo = objectMapper.convertValue(info, CompanyInfo.class);
+                if (companyInfo.year == null && !companyInfo.checkNull()) {
+                    throw new ExtractionException("Ошибка обработки. Не задан год для добавления показателей " +
+                            "(поле reporting_year)");
+                }
+            }
+            return list;
+        } catch (FileNotFoundException e) {
+            throw new ExtractionException("Не найден файл на сервере");
+        } catch (UnrecognizedPropertyException e) {
+            throw new ExtractionException("Ошибка обработки файла. Неизвестное поле: " + e.getPropertyName());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ExtractionException("Ошибка обработки файла: " + e.getCause().getLocalizedMessage());
+        } catch (IllegalAccessException e) {
+            throw new ServerStateException(" " + e.getCause().getLocalizedMessage());
         }
-        return null;
     }
 
     public void dataFromDBFFile(@NotNull String filePath) {

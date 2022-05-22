@@ -12,13 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -30,49 +28,33 @@ public class FileSystemStorageService implements StorageService {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
-    @Override
-    public void store(MultipartFile file) {
-        try {
-            if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file.");
-            }
-            Path destinationFile = this.rootLocation.resolve(
-                            Paths.get(Objects.requireNonNull(file.getOriginalFilename()))
-                    )
-                    .normalize().toAbsolutePath();
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
-                throw new StorageException("Cannot store file outside current directory.");
-            }
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (IOException e) {
-            throw new StorageException("Failed to store file.", e);
-        }
-    }
-
     public String storeInTemp(MultipartFile file) {
         try {
             if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file.");
+                throw new StorageException("Выбранный файл пустой. Пожалуйста, выберите другой");
             }
             Path destinationFile = this.rootLocation.resolve(
                             Paths.get(Objects.requireNonNull(file.getOriginalFilename()))
                     )
                     .normalize().toAbsolutePath();
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
-                throw new StorageException("Cannot store file outside current directory.");
+                throw new StorageException("Невозможно сохранить выбранный файл вне директории");
             }
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
                 return destinationFile.toString();
             }
         } catch (IOException e) {
-            throw new StorageException("Failed to store file.", e);
+            throw new StorageException("Невозможно сохранить файл", e);
         }
     }
 
     @Override
+    public Path load(String filename) {
+        return rootLocation.resolve(filename);
+    }
+
+/*    @Override
     public Stream<Path> loadAll() {
         try {
             return Files.walk(this.rootLocation, 1)
@@ -81,15 +63,10 @@ public class FileSystemStorageService implements StorageService {
         } catch (IOException e) {
             throw new StorageException("Failed to read stored files", e);
         }
+    }*/
 
-    }
 
-    @Override
-    public Path load(String filename) {
-        return rootLocation.resolve(filename);
-    }
-
-    @Override
+/*    @Override
     public Resource loadAsResource(String filename) {
         try {
             Path file = load(filename);
@@ -106,7 +83,7 @@ public class FileSystemStorageService implements StorageService {
         catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
-    }
+    }*/
 
     public File loadAsFile(String filename) {
         try {
@@ -117,11 +94,11 @@ public class FileSystemStorageService implements StorageService {
             }
             else {
                 throw new StorageFileNotFoundException(
-                        "Could not read file: " + filename);
+                        "Ошибка чтения файла: " + filename);
 
             }
         } catch (IOException e) {
-            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+            throw new StorageFileNotFoundException("Ошибка чтения файла: " + filename, e);
         }
     }
 
@@ -143,7 +120,7 @@ public class FileSystemStorageService implements StorageService {
         try {
             Files.createDirectories(rootLocation);
         } catch (IOException e) {
-            throw new StorageException("Could not initialize storage", e);
+            throw new StorageException("Не удалось проинициализировать временное хранилище", e);
         }
     }
 }

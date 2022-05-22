@@ -18,32 +18,32 @@ public class FullInfo implements Serializable {
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @CsvBindByName(column = "id")
     @JsonProperty("id")
-    private @NotNull BigDecimal id;
+    public @NotNull BigDecimal id;
 
     @Column(nullable = false, insertable = false, updatable = false)
     @JsonProperty(value = "okpo", required = true)
     @CsvBindByName(required = true, column = "okpo")
-    private @NotNull BigDecimal okpo;
+    public @NotNull BigDecimal okpo;
 
     @CsvBindByName(column = "name")
     @JsonProperty("name")
-    private String name;
+    public String name;
 
     @CsvBindByName(required = true)
     @JsonProperty("reporting_year")
-    private BigDecimal reportingYear;
+    public BigDecimal reportingYear;
 
     @CsvBindByName(column = "people")
     @JsonProperty("people")
-    private @NotNull BigDecimal people;
+    public @NotNull BigDecimal people;
     @CsvBindByName(column = "revenue")
     @JsonProperty("revenue")
-    private @NotNull BigDecimal revenue;
+    public @NotNull BigDecimal revenue;
 
     @CsvBindByName(column = "profit")
     @JsonProperty("profit")
-    private @NotNull BigDecimal profit;
+    public @NotNull BigDecimal profit;
     @CsvBindByName(column = "salary")
     @JsonProperty("salary")
-    private @NotNull BigDecimal salary;
+    public @NotNull BigDecimal salary;
 }

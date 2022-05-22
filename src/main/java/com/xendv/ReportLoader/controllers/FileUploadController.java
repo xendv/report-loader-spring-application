@@ -1,5 +1,6 @@
 package com.xendv.ReportLoader.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xendv.ReportLoader.exception.storage.StorageFileNotFoundException;
 import com.xendv.ReportLoader.model.FullInfo;
@@ -36,29 +37,17 @@ public class FileUploadController {
 
     @PostMapping("")
     @ResponseBody
-    public String handleFileUpload(@RequestParam(value = "file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return null;//ResponseEntity.badRequest().body("Your file is empty");
-        } else {
-            String newFile = storageService.storeInTemp(file);
-            //var companies = extractionService.extract(newFile);
+    public ResponseEntity<String> handleFileUpload(@RequestParam(value = "file") MultipartFile file) {
+        String newFile = storageService.storeInTemp(file);
+        try {
             var companies = extractionService.extract(newFile);
-            //ResponseEntity.ok().body(extractionService.extract(newFile));
             ObjectMapper objectMapper = new ObjectMapper();
-            try {
-                var c = objectMapper.writeValueAsString(companies);
-                System.out.println(c);
-                return c;
-            } catch (Exception e) {
-                return null;
-            }
-
-        /*redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");*/
-
+            var c = objectMapper.writeValueAsString(companies);
+            System.out.println(c);
+            return ResponseEntity.ok().body(c);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body(e.getLocalizedMessage());
         }
-
-        //return null;//ResponseEntity.ok("File is ok");
     }
 
     @PostMapping("/save")

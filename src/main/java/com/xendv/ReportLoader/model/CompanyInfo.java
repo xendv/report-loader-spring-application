@@ -8,6 +8,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
 @Data
@@ -30,7 +31,7 @@ public class CompanyInfo {
     public @NotNull BigDecimal id;
 
     @CsvBindByName(required = true)
-    @JsonProperty("reporting_year")
+    @JsonProperty(value = "reporting_year", required = true)
     @Column(name = "reporting_year", nullable = false)
     public @NotNull BigDecimal year;
 
@@ -90,4 +91,14 @@ public class CompanyInfo {
     public @NotNull String getName() {
         return mainInfo.getName();
     }*/
+
+    public boolean checkNull() throws IllegalAccessException {
+        for (Field f : getClass().getDeclaredFields())
+            if (f.get(this) != null) {
+                if (!f.getName().equals("okpo")) {
+                    return false;
+                }
+            }
+        return true;
+    }
 }
